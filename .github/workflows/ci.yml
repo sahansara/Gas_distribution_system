@@ -1,5 +1,6 @@
 name: Gas_distribution CI
 
+
 on:
   push:
     branches: [ "main", "development" ]
@@ -22,10 +23,10 @@ jobs:
           --health-cmd="mysqladmin ping --silent"
           --health-interval=10s
           --health-timeout=5s
-          --health-retries=3
+          --health-retries=10
 
     steps:
-      - name: Checkout Repository
+      - name: Checkout code
         uses: actions/checkout@v3
 
       - name: Setup PHP
@@ -38,15 +39,34 @@ jobs:
       - name: Install Composer Dependencies
         run: composer install --no-progress --prefer-dist --optimize-autoloader
 
-      - name: Copy .env
+      - name: Create .env
         run: cp .env.example .env
 
-      - name: Generate Application Key
+      - name: Set Laravel environment variables
+        run: |
+          echo "DB_CONNECTION=mysql" >> .env
+          echo "DB_HOST=127.0.0.1" >> .env
+          echo "DB_PORT=3306" >> .env
+          echo "DB_DATABASE=gas_distribution" >> .env
+          echo "DB_USERNAME=root" >> .env
+          echo "DB_PASSWORD=root" >> .env
+
+      - name: Wait for MySQL
+        run: |
+          for i in {1..20}; do
+            if mysqladmin ping -h "127.0.0.1" -u root --password=root --silent; then
+              echo "MySQL is ready!"
+              break
+            fi
+            echo "Waiting for MySQL..."
+            sleep 3
+          done
+
+      - name: Generate App Key
         run: php artisan key:generate
 
-      - name: Setup Database
-        run: |
-          php artisan migrate --force
+      - name: Run Migrations
+        run: php artisan migrate --force
 
       - name: Run Tests
         run: php artisan test
