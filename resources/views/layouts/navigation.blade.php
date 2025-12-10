@@ -20,6 +20,9 @@
                     {{ __('Purchase Orders') }}
                     </x-nav-link>
 
+                    <x-nav-link :href="route('admin.payments.index')" :active="request()->routeIs('admin.payments.*')">
+                        {{ __('Manage Payments') }}
+                    </x-nav-link>
                 </div>
             </div>
 

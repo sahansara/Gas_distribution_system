@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\CustomerController;
 use App\Http\Controllers\Admin\SupplierController;
 use App\Http\Controllers\Admin\PurchaseOrderController;
+use App\Http\Controllers\Admin\SupplierPaymentController;
 use App\Models\Customer;
 use App\Models\Supplier;
 
@@ -31,16 +32,20 @@ Route::middleware('auth')->group(function () {
 
 Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
     
-    // This handles all your customer routes (index, store, create, etc.)
+    // This handles all  customer routes 
     Route::resource('customers', CustomerController::class);
     Route::resource('suppliers', SupplierController::class);
-    // Purchase Orders
-    Route::resource('purchase_orders', PurchaseOrderController::class);
     
+    // Purchase Orders
+    Route::resource('purchase_orders', PurchaseOrderController::class); 
     // API Route for fetching prices of a supplier
     Route::get('/api/supplier-prices/{id}', [PurchaseOrderController::class, 'getSupplierPrices'])
          ->name('api.supplier.prices');
     
+    // Supplier Payments routes
+    Route::resource('payments', SupplierPaymentController::class);
+    // API for pos of a supplier
+    Route::get('/api/supplier-pos/{id}', [SupplierPaymentController::class, 'getSupplierPOs']);
 
 });
 require __DIR__.'/auth.php';
