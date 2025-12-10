@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\CustomerController;
 use App\Http\Controllers\Admin\SupplierController;
 use App\Http\Controllers\Admin\PurchaseOrderController;
 use App\Http\Controllers\Admin\SupplierPaymentController;
+use App\Http\Controllers\Admin\GrnController;
 use App\Models\Customer;
 use App\Models\Supplier;
 
@@ -46,6 +47,32 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     Route::resource('payments', SupplierPaymentController::class);
     // API for pos of a supplier
     Route::get('/api/supplier-pos/{id}', [SupplierPaymentController::class, 'getSupplierPOs']);
+    
+
+    
+    
+    // Admin only approval route
+    Route::post('/grn/{id}/approve', [GrnController::class, 'approve'])->name('grn.approve');
+    
+    // // AJAX Routes
+    // Route::get('/api/supplier-pending-pos/{id}', [GrnController::class, 'getPendingPos']);
+    // Route::get('/api/po-items/{id}', [GrnController::class, 'getPoItems']);
+});
+
+
+Route::middleware(['auth', 'role:staff'])->prefix('staff')->name('staff.')->group(function () {
+    // Staff Dashboard Route
+    Route::get('/dashboard', [App\Http\Controllers\Admin\GrnController::class, 'create'])->name('dashboard');
+    // We reuse the GrnController 'create' method but map it to the staff dashboard view
+});
+Route::middleware(['auth', 'role:admin,staff'])->prefix('admin')->name('admin.')->group(function () {
+    
+   Route::resource('grn', GrnController::class);
+
+    // AJAX Routes for GRN
+    Route::get('/api/supplier-pending-pos/{id}', [GrnController::class, 'getPendingPos']);
+    Route::get('/api/po-items/{id}', [GrnController::class, 'getPoItems']);
 
 });
+
 require __DIR__.'/auth.php';

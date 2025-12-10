@@ -42,8 +42,8 @@ class AuthenticatedSessionController extends Controller
 
         // If user is Staff, maybe send to Orders?
         if ($user->role === 'staff') {
-            // return redirect()->route('admin.orders.index'); // Example
-             return redirect('staff/dashboard');
+            
+             return redirect()->route('staff.dashboard');
         }
 
         // Default: Send to standard dashboard
