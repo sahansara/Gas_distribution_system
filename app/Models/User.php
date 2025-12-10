@@ -20,6 +20,8 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'role',
+        'customer_type',
     ];
 
     /**
@@ -31,6 +33,30 @@ class User extends Authenticatable
         'password',
         'remember_token',
     ];
+
+
+    // Relationship: user has one customer profile 
+    public function customer()
+    {
+        return $this->hasOne(Customer::class);
+    }
+
+    // Helpers
+    public function isAdmin(): bool
+    {
+        return $this->role === 'admin';
+    }
+
+    public function isStaff(): bool
+    {
+        return $this->role === 'staff';
+    }
+
+    public function isCustomer(): bool
+    {
+        return $this->role === 'customer';
+    }
+
 
     /**
      * Get the attributes that should be cast.
