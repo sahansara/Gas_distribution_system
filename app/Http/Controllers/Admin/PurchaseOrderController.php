@@ -193,4 +193,23 @@ class PurchaseOrderController extends Controller
 
         return back()->with('success', 'Purchase Order Approved! Staff can now receive goods.');
     }
+    // export purchase order to pdf
+    public function exportPdf($id)
+    {
+        //  Fetch the PO with related data
+        $po = PurchaseOrder::with(['supplier', 'items.gasType'])->findOrFail($id);
+
+        //  Prepare data for the view
+        $data = [
+            'po' => $po,
+            'supplier' => $po->supplier,
+            'items' => $po->items,
+            'date' => now()->format('Y-m-d'),
+        ];
+
+        //  Generate the PDF
+        $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('sysadmin.purchase_orders.pdf', $data);
+        
+        return $pdf->download('Purchase_Order_'.$po->po_number.'.pdf');
+    }
 }

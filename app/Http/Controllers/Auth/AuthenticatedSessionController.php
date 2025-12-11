@@ -40,13 +40,13 @@ class AuthenticatedSessionController extends Controller
             return redirect()->route('/dashboard'); 
         }
 
-        // If user is Staff, maybe send to Orders?
+      
         if ($user->role === 'staff') {
             
              return redirect()->route('staff.dashboard');
         }
 
-        // Default: Send to standard dashboard
+        // Default Send to standard dashboard
         return redirect()->intended(route('dashboard', absolute: false));
         
         

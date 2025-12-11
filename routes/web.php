@@ -40,7 +40,10 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     // API Route for fetching prices of a supplier
     Route::get('/api/supplier-prices/{id}', [PurchaseOrderController::class, 'getSupplierPrices'])
          ->name('api.supplier.prices');
-    
+    // Purchase Order PDF Export
+    Route::get('/purchase_orders/{id}/export', [\App\Http\Controllers\Admin\PurchaseOrderController::class, 'exportPdf'])
+         ->name('purchase_orders.export_pdf');
+
     // Supplier Payments routes
     Route::resource('payments', SupplierPaymentController::class);
     // API for pos of a supplier
@@ -49,11 +52,6 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     // Admin only approval route
     Route::post('/grn/{id}/approve', [GrnController::class, 'approve'])->name('grn.approve');
     
-    // // AJAX Routes
-    // Route::get('/api/supplier-pending-pos/{id}', [GrnController::class, 'getPendingPos']);
-    // Route::get('/api/po-items/{id}', [GrnController::class, 'getPoItems']);
-
-
     // apporve po route by admin 
     Route::post('/purchase_orders/{id}/approve', [PurchaseOrderController::class, 'approve'])
          ->name('purchase_orders.approve'); 

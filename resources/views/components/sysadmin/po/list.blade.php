@@ -75,18 +75,20 @@
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
     
-                            <a href="#" class="text-indigo-600 hover:text-indigo-900 mr-3">View</a>
+                                <a href="{{ route('admin.purchase_orders.export_pdf', $po->id) }}" class="text-indigo-600 hover:text-indigo-900 mr-3 font-bold">
+                                     View PDF
+                                </a>
 
-                            @if($po->status === 'Pending')
-                                <form action="{{ route('admin.purchase_orders.approve', $po->id) }}" method="POST" class="inline-block" onsubmit="return confirm('Approve this Purchase Order? Staff will be able to receive goods.');">
-                                    @csrf
-                                    <button type="submit" class="text-green-600 hover:text-indigo-900 font-bold bg-indigo-50 px-3 py-1 rounded hover:bg-indigo-100">
-                                         Approve
-                                    </button>
-                                </form>
-                            @endif
+                                @if($po->status === 'Pending')
+                                    <form action="{{ route('admin.purchase_orders.approve', $po->id) }}" method="POST" class="inline-block" onsubmit="return confirm('Approve this Purchase Order? Staff will be able to receive goods.');">
+                                        @csrf
+                                        <button type="submit" class="text-green-600 hover:text-green-900 font-bold border border-green-200 bg-green-50 px-2 py-1 rounded">
+                                            ✓ Approve
+                                        </button>
+                                    </form>
+                                @endif
 
-                        </td>
+                            </td>
                         </tr>
                     @empty
                         <tr>
