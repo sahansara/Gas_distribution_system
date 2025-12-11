@@ -12,9 +12,43 @@
 
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                         {{ __('Dashboard') }}
                     </x-nav-link>
+
+                    
+                    @if(Auth::user()->role === 'admin')
+                        <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
+                            {{ __('Admin Dashboard') }}
+                        </x-nav-link>
+
+                        <x-nav-link :href="route('admin.purchase_orders.index')" :active="request()->routeIs('admin.purchase_orders.*')">
+                            {{ __('Purchase Orders') }}
+                        </x-nav-link>
+
+                        <x-nav-link :href="route('admin.payments.index')" :active="request()->routeIs('admin.payments.*')">
+                            {{ __('Manage Payments') }}
+                        </x-nav-link>
+
+                        <x-nav-link :href="route('admin.grn.index')" :active="request()->routeIs('admin.grn.*')">
+                            {{ __('GRN Approvals') }}
+                        </x-nav-link>
+
+                        <x-nav-link :href="route('admin.reports.index')" :active="request()->routeIs('admin.reports.*')">
+                            {{ __('Reports & Refill') }}
+                        </x-nav-link>
+                    @endif
+
+                    @if(Auth::user()->role === 'staff')
+                        <x-nav-link :href="route('staff.dashboard')" :active="request()->routeIs('staff.dashboard')">
+                            {{ __('Staff Dashboard') }}
+                        </x-nav-link>
+
+                        <x-nav-link :href="route('staff.orders.index')" :active="request()->routeIs('staff.orders.*')">
+                            {{ __('Orders') }}
+                        </x-nav-link>
+                        @endif
                 </div>
             </div>
 
