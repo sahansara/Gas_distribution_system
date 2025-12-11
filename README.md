@@ -2,10 +2,6 @@
 ````markdown
 # Gas Distribution Management System (DMS)
 
-<p align="center">
-<a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a>
-</p>
-
 A comprehensive, role based web application for managing gas distribution operations. This system handles the complete supply chain lifecycle from purchasing stock (POs) to warehouse entry (GRN) and final customer delivery (Logistics).
 
 Built with **Laravel 11**, **Tailwind CSS**, and **Alpine.js**, adhering to strict MVC architecture and secure role-based access control (RBAC).
