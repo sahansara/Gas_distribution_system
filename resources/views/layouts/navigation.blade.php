@@ -26,6 +26,10 @@
                         <x-nav-link :href="route('admin.grn.index')" :active="request()->routeIs('admin.grn.*')">
                             {{ __('GRN Approvals') }}
                         </x-nav-link>
+
+                        <x-nav-link :href="route('admin.reports.index')" :active="request()->routeIs('admin.reports.*')">
+                            {{ __('Reports & Refill') }}
+                        </x-nav-link>
                     @endif
 
                     @if(Auth::user()->role === 'staff')
@@ -94,6 +98,9 @@
                 </x-responsive-nav-link>
                 <x-responsive-nav-link :href="route('admin.grn.index')" :active="request()->routeIs('admin.grn.*')">
                     {{ __('GRN Approvals') }}
+                </x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('admin.reports.index')" :active="request()->routeIs('admin.reports.*')">
+                    {{ __('Reports & Refill') }}
                 </x-responsive-nav-link>
             @endif
 

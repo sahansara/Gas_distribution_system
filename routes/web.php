@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\SupplierController;
 use App\Http\Controllers\Admin\PurchaseOrderController;
 use App\Http\Controllers\Admin\SupplierPaymentController;
 use App\Http\Controllers\Admin\GrnController;
+use App\Http\Controllers\Admin\SupplierReportController;
 use App\Models\Customer;
 use App\Models\Supplier;
 
@@ -57,6 +58,18 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     // // AJAX Routes
     // Route::get('/api/supplier-pending-pos/{id}', [GrnController::class, 'getPendingPos']);
     // Route::get('/api/po-items/{id}', [GrnController::class, 'getPoItems']);
+
+
+    // apporve po route by admin 
+    Route::post('/purchase_orders/{id}/approve', [PurchaseOrderController::class, 'approve'])
+         ->name('purchase_orders.approve');
+
+    
+    
+    // Supplier Reports Routes
+    Route::get('/reports', [SupplierReportController::class, 'index'])->name('reports.index');
+    Route::post('/reports/update-invoice/{id}', [SupplierReportController::class, 'updateInvoice'])->name('reports.update_invoice');
+    Route::get('/reports/export/{id}', [SupplierReportController::class, 'exportPdf'])->name('reports.export_pdf');
 });
 
 

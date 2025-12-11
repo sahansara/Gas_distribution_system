@@ -96,12 +96,12 @@
     function poFormHandler() {
         return {
             supplierId: '',
-            supplierPrices: [], // Stores fetched contract prices
+            supplierPrices: [], 
             items: [
                 { gas_type_id: '', quantity: 1, unit_price: 0 } // Start with 1 empty row
             ],
 
-            // 1. Fetch Contract Prices from Backend
+            // flect contractor prices supplier form backedn on supplier selection
             fetchPrices() {
                 if (!this.supplierId) return;
 
@@ -114,36 +114,37 @@
                     });
             },
 
-            // 2. Find Price when Gas Type is selected
+            // gas price update when gas type is selected
             updatePrice(index) {
                 let selectedGasId = this.items[index].gas_type_id;
                 
-                // Find matching price in the fetched list
+               
                 let priceObj = this.supplierPrices.find(p => p.gas_type_id == selectedGasId);
                 
                 if (priceObj) {
                     this.items[index].unit_price = priceObj.contract_price;
                 } else {
-                    this.items[index].unit_price = 0; // Or keep existing
+                    this.items[index].unit_price = 0;
                 }
             },
 
-            // 3. Add New Row
+            // add new row
             addItem() {
                 this.items.push({ gas_type_id: '', quantity: 1, unit_price: 0 });
             },
 
-            // 4. Remove Row
+            // remove row
             removeItem(index) {
                 this.items.splice(index, 1);
             },
 
-            // 5. Calculate Grand Total dynamically
+            // calculate grand total dynamically
             get grandTotal() {
                 let total = this.items.reduce((sum, item) => {
                     return sum + (item.quantity * item.unit_price);
                 }, 0);
-                return total.toFixed(2); // Format as currency string
+                return total.toFixed(2); 
+                
             }
         }
     }

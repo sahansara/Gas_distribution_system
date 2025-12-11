@@ -180,4 +180,17 @@ class PurchaseOrderController extends Controller
             return back()->with('error', 'Error creating PO: ' . $e->getMessage());
         }
     }
+    //after create po approve purchase order by admin  
+    public function approve($id)
+    {
+        $po = PurchaseOrder::findOrFail($id);
+
+        if ($po->status !== 'Pending') {
+            return back()->with('error', 'This PO is already processed.');
+        }
+
+        $po->update(['status' => 'Approved']);
+
+        return back()->with('success', 'Purchase Order Approved! Staff can now receive goods.');
+    }
 }

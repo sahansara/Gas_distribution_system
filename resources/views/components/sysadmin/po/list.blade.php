@@ -74,8 +74,19 @@
                                 Rs. {{ number_format($po->total_amount, 2) }}
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                <a href="#" class="text-indigo-600 hover:text-indigo-900">View</a>
-                            </td>
+    
+                            <a href="#" class="text-indigo-600 hover:text-indigo-900 mr-3">View</a>
+
+                            @if($po->status === 'Pending')
+                                <form action="{{ route('admin.purchase_orders.approve', $po->id) }}" method="POST" class="inline-block" onsubmit="return confirm('Approve this Purchase Order? Staff will be able to receive goods.');">
+                                    @csrf
+                                    <button type="submit" class="text-green-600 hover:text-indigo-900 font-bold bg-indigo-50 px-3 py-1 rounded hover:bg-indigo-100">
+                                         Approve
+                                    </button>
+                                </form>
+                            @endif
+
+                        </td>
                         </tr>
                     @empty
                         <tr>
