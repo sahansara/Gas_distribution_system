@@ -94,7 +94,7 @@
                     <span class="block text-xs text-gray-500 uppercase">Total Amount</span>
                     <span class="block text-2xl font-bold text-gray-900" x-text="'Rs. ' + grandTotal"></span>
                 </div>
-                <button type="submit" class="bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-8 rounded shadow-lg transition transform hover:scale-105">
+                <button type="submit" class="text-green-600 hover:text-indigo-900 font-bold bg-indigo-50 px-3 py-1 rounded hover:bg-indigo-100">
                     Confirm Order
                 </button>
             </div>

@@ -9,25 +9,24 @@ use App\Http\Controllers\Admin\SupplierPaymentController;
 use App\Http\Controllers\Admin\GrnController;
 use App\Http\Controllers\Admin\SupplierReportController;
 use App\Http\Controllers\Staff\OrderController;
+use App\Http\Controllers\Admin\DashboardController;
 use App\Models\Customer;
 use App\Models\Supplier;
-
 
 
 Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/dashboard', [DashboardController::class, 'index'])
+    ->middleware(['auth', 'verified'])
+    ->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
-
 
 
 Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
@@ -47,7 +46,7 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     // API for pos of a supplier
     Route::get('/api/supplier-pos/{id}', [SupplierPaymentController::class, 'getSupplierPOs']);
     
-  // Admin only approval route
+    // Admin only approval route
     Route::post('/grn/{id}/approve', [GrnController::class, 'approve'])->name('grn.approve');
     
     // // AJAX Routes
@@ -63,6 +62,13 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     Route::get('/reports', [SupplierReportController::class, 'index'])->name('reports.index');
     Route::post('/reports/update-invoice/{id}', [SupplierReportController::class, 'updateInvoice'])->name('reports.update_invoice');
     Route::get('/reports/export/{id}', [SupplierReportController::class, 'exportPdf'])->name('reports.export_pdf');
+
+    // Delivery Routes Management
+    Route::resource('routes', \App\Http\Controllers\Admin\RouteController::class);
+    
+    // Custom route to Start/Stop the journey
+    Route::post('/routes/{id}/status', [\App\Http\Controllers\Admin\RouteController::class, 'updateStatus'])
+        ->name('routes.update_status');
 });
 
 // Staff Routes
@@ -80,6 +86,14 @@ Route::middleware(['auth', 'role:staff'])->prefix('staff')->name('staff.')->grou
     
     // aapi for Pricing
     Route::get('/api/get-price', [\App\Http\Controllers\Staff\OrderController::class, 'getCustomerPrice'])->name('api.get_price');
+
+
+    // Delivery Routes for Staff
+    Route::resource('routes', \App\Http\Controllers\Staff\RouteController::class)->only(['index', 'show']);
+    
+    // Start/Stop Journey
+    Route::post('/routes/{id}/status', [\App\Http\Controllers\Staff\RouteController::class, 'updateStatus'])
+        ->name('routes.update_status');
 });
 
 
@@ -93,6 +107,5 @@ Route::middleware(['auth', 'role:admin,staff'])->prefix('admin')->name('admin.')
     Route::get('/api/po-items/{id}', [GrnController::class, 'getPoItems']);
 
 });
-
 
 require __DIR__.'/auth.php';
